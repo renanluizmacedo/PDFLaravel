@@ -21,4 +21,4 @@ Route::get('/', function () {
 
 Route::get('/', [AlunoController::class, 'index']);
 
-
+Route::post('/pdfgerar', [GerarPDF::class, 'pdf'])->name('pdfgenerate');

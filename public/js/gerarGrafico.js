@@ -1,4 +1,5 @@
-function gerarGrafico(dadosAlunoJSON) {
+function generateGraph(dadosAlunoJSON) {
+
     google.charts.load("current", {
         packages: ["corechart"],
     });
@@ -16,7 +17,6 @@ function gerarGrafico(dadosAlunoJSON) {
         ]);
 
         var options = {
-            title: "Média alunos Instituto Federal do Paraná",
             height: 500,
             is3D: true,
         };
@@ -31,52 +31,10 @@ function gerarGrafico(dadosAlunoJSON) {
         });
         chart.draw(data, options);
 
-        gerarGraficoPDF(chart_div.innerHTML, aluno);
+        document.getElementById("gerarGrafico").value = chart_div.innerHTML;
+
+        return chart_div.innerHTML;
     }
 
-    function gerarGraficoPDF(grafico, dados) {
-        img = new Image();
-        img.src = grafico;
 
-        var generateData = function () {
-            var result = [];
-            var data = {
-                Nome: dados.nome,
-                Curso: dados.curso.nome,
-            };
-            for (var i = 0; i < 1; i += 1) {
-                data.id = (i + 1).toString();
-                result.push(Object.assign({}, data));
-            }
-            return result;
-        };
-
-        function createHeaders(keys) {
-            var result = [];
-            for (var i = 0; i < keys.length; i += 1) {
-                result.push({
-                    id: keys[i],
-                    name: keys[i],
-                    prompt: keys[i],
-                    width: 100,
-                    align: "center",
-                    padding: 0,
-                });
-            }
-            return result;
-        }
-
-        var headers = createHeaders(["Nome", "Curso"]);
-
-        var doc = new jsPDF({
-            putOnlyUsedFonts: true,
-            orientation: "landscape",
-        });
-
-        doc.addImage(img, "JPEG", 15, 40, 180, 160);
-
-        doc.table(1, 1, generateData(), headers);
-
-        doc.save("table.pdf");
-    }
 }
